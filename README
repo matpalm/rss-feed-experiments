@@ -1,0 +1,5 @@
+bishop> ./classify.sh test.11.dat > classify.out
+bishop> ./parse_results.rb < classify.out
+newt> ./result.gp 
+
+generates result.png

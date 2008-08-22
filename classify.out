@@ -1,0 +1,48 @@
+slice 3 num_slices 16
+correct=645 of total=840 => result=0.767857142857143
+result WordOccClassifier 0.767857142857143
+slice 7 num_slices 16
+correct=636 of total=840 => result=0.757142857142857
+result WordOccClassifier 0.757142857142857
+slice 1 num_slices 16
+correct=631 of total=840 => result=0.751190476190476
+result WordOccClassifier 0.751190476190476
+slice 9 num_slices 16
+correct=611 of total=840 => result=0.727380952380952
+result WordOccClassifier 0.727380952380952
+slice 4 num_slices 16
+correct=628 of total=840 => result=0.747619047619048
+result WordOccClassifier 0.747619047619048
+slice 6 num_slices 16
+correct=645 of total=840 => result=0.767857142857143
+result WordOccClassifier 0.767857142857143
+slice 12 num_slices 16
+correct=657 of total=840 => result=0.782142857142857
+result WordOccClassifier 0.782142857142857
+slice 14 num_slices 16
+correct=639 of total=840 => result=0.760714285714286
+result WordOccClassifier 0.760714285714286
+slice 10 num_slices 16
+correct=653 of total=840 => result=0.777380952380952
+result WordOccClassifier 0.777380952380952
+slice 5 num_slices 16
+correct=665 of total=840 => result=0.791666666666667
+result WordOccClassifier 0.791666666666667
+slice 13 num_slices 16
+correct=646 of total=840 => result=0.769047619047619
+result WordOccClassifier 0.769047619047619
+slice 0 num_slices 16
+correct=640 of total=840 => result=0.761904761904762
+result WordOccClassifier 0.761904761904762
+slice 8 num_slices 16
+correct=651 of total=840 => result=0.775
+result WordOccClassifier 0.775
+slice 15 num_slices 16
+correct=633 of total=840 => result=0.753571428571429
+result WordOccClassifier 0.753571428571429
+slice 2 num_slices 16
+correct=626 of total=840 => result=0.745238095238095
+result WordOccClassifier 0.745238095238095
+slice 11 num_slices 16
+correct=653 of total=840 => result=0.777380952380952
+result WordOccClassifier 0.777380952380952
