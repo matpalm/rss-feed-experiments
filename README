@@ -1,3 +1,6 @@
+i've just added this to github
+it's needs a bit of cleanup...
+
 bishop> ./classify.sh test.11.dat > classify.out
 bishop> ./parse_results.rb < classify.out
 newt> ./result.gp 
