@@ -1,6 +1,6 @@
-require 'm_algo_classifier.rb'
+require 'classifier/m_algo.rb'
 
-describe 'm_algo_classifier' do
+describe 'classifier m_algo' do
 	
 	before :each do
 		@c = MAlgoClassifier.new
