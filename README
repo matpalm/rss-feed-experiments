@@ -8,5 +8,8 @@ classify all slices in parallel
 bishop> ./classify.sh test.100.dat > classify.out
 bishop> ./parse_results.rb < classify.out
 newt> ./result.gp 
-
 generates result.png
+
+fetch/ 
+contains the code to download rss feeds for experimenting with
+see capture_new_content.sh
