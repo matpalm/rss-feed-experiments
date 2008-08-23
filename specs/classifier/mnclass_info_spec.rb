@@ -1,6 +1,6 @@
-require 'mnclass_info'
+require 'classifier/multinominal_bayes.rb'
 
-describe 'class_info' do
+describe 'multinominal bayes class info' do
 	before :each do
 		@ci = MNClassInfo.new
 	end
