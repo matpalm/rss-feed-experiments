@@ -1,4 +1,4 @@
-require 'classifier'
+require 'classifier/classifier.rb'
 require 'markov_chain'
 require 'laplace'
 

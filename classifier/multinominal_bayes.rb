@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'classifier'
+require 'classifier/classifier.rb'
 require 'mnclass_info'
 require 'laplace' 
 
