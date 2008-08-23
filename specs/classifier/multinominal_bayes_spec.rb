@@ -1,4 +1,4 @@
-require 'multinominal_bayes_classifier'
+require 'classifier/multinominal_bayes'
 
 describe 'multinominal_bayes_classifier' do
 	

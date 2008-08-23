@@ -1,4 +1,4 @@
-require 'markov_chain_classifier'
+require 'classifier/markov_chain'
 
 describe 'markov_chain' do
 	before :each do

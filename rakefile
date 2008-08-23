@@ -1,0 +1,4 @@
+desc "runs spec"
+task :spec do
+	sh 'spec specs/* specs/classifier/*'
+end

@@ -1,4 +1,4 @@
-require 'naive_bayes_classifier'
+require 'classifier/naive_bayes'
 
 describe 'naive_bayes_classifier' do
 

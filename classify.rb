@@ -4,11 +4,11 @@ require 'parser'
 require 'the_register_rules'
 require 'the_register_or_lamborghini_rules'
 
-require 'm_algo_classifier'
-require 'word_occ_classifier'
-require 'naive_bayes_classifier'
-require 'multinominal_bayes_classifier'
-require 'markov_chain_classifier'
+require 'classifier/m_algo'
+require 'classifier/word_occ'
+require 'classifier/naive_bayes'
+require 'classifier/multinominal_bayes'
+require 'classifier/markov_chain'
 
 require 'cross_validator'
 require 'yaml'
@@ -25,9 +25,9 @@ end
 classifiers = []
 #classifiers << MAlgoClassifier.new
 classifiers << WordOccClassifier.new
-#classifiers << NaiveBayesClassifier.new
-#classifiers << MultinominalBayesClassifier.new
-#classifiers << MarkovChainClassifier.new(:include_start_end => true)
+classifiers << NaiveBayesClassifier.new
+classifiers << MultinominalBayesClassifier.new
+classifiers << MarkovChainClassifier.new(:include_start_end => true)
 
 classifiers.each do |classifier|
 	result = CrossValidator.new(classifier).validate(articles, slice.to_i, num_slices.to_i)	

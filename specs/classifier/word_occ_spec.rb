@@ -1,4 +1,4 @@
-require 'word_occ_classifier'
+require 'classifier/word_occ'
 
 describe 'word_occ_classifier' do
 	

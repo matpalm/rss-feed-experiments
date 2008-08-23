@@ -1,7 +1,11 @@
-i've just added this to github
-it's needs a bit of cleanup...
+run tests
+>rake spec
 
-bishop> ./classify.sh test.11.dat > classify.out
+classify a slice
+>cat test.100.dat | classify.rb 1 10
+
+classify all slices in parallel
+bishop> ./classify.sh test.100.dat > classify.out
 bishop> ./parse_results.rb < classify.out
 newt> ./result.gp 
 
