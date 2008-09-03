@@ -21,7 +21,6 @@ Parser.new.articles_from_stdin do |a|
 	articles << a 
 end
 
-
 classifiers = []
 #classifiers << MAlgoClassifier.new
 classifiers << WordOccClassifier.new
@@ -29,8 +28,22 @@ classifiers << NaiveBayesClassifier.new
 classifiers << MultinominalBayesClassifier.new
 classifiers << MarkovChainClassifier.new(:include_start_end => true)
 
-classifiers.each do |classifier|
-	result = CrossValidator.new(classifier).validate(articles, slice.to_i, num_slices.to_i)	
-	display_name = classifier.respond_to?(:display_name) ? classifier.display_name : classifier.class.to_s
-	puts "result #{display_name} #{result}"
+crossvalidators = classifiers.collect { |classifier| CrossValidator.new(classifier, slice.to_i, num_slices.to_i) }
+
+articles.each_with_index do |article, idx|
+	crossvalidators.each do |crossvalidator|
+		crossvalidator.training_pass idx, article	
+	end
 end
+articles.each_with_index do |article, idx|
+	crossvalidators.each do |crossvalidator|
+		crossvalidator.testing_pass idx, article	
+	end
+end
+
+crossvalidators.each do |crossvalidator|
+	classifier = crossvalidator.classifier
+	display_name = classifier.respond_to?(:display_name) ? classifier.display_name : classifier.class.to_s
+	puts "result #{display_name} #{crossvalidator.pass_rate}"
+end
+

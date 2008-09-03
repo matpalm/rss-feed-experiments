@@ -1,12 +1,15 @@
 #!/usr/bin/ruby
+require 'set'
 
-classifiers = [
+classifiers = Set.new
+=begin
 	'MAlgoClassifier', 
 	'WordOccClassifier', 
 	'NaiveBayesClassifier', 
 	'MultinominalBayesClassifier',
 	'MarkovChainClassifier_true'
 	]
+=end
 
 titles = { 'MAlgoClassifier' => 'm-algorithm',
               'WordOccClassifier' => 'word occurences',
@@ -76,6 +79,7 @@ end
 STDIN.each do |line|		
 	next unless line =~ /^result/
 	classifier, result = line.chomp.gsub(/result /,'').split(/ /)
+	classifiers.add classifier
 	results[classifier] = Result.new(classifier) unless results[classifier]
 	results[classifier].add_result result
 end

@@ -14,5 +14,11 @@ class Parser
 			yield parse(line)
 		end			
 	end
-	
+
+	def articles_from_file file
+		IO.read(file).each do |line|
+			yield parse(line)
+		end			
+	end
+
 end

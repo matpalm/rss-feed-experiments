@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 cat $1 | ./classify.rb 0 16 &
 cat $1 | ./classify.rb 1 16 &
 cat $1 | ./classify.rb 2 16 &
