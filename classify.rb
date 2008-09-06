@@ -1,5 +1,3 @@
-#!/usr/bin/env ruby
-
 require 'parser'
 require 'the_register_rules'
 require 'the_register_or_lamborghini_rules'
@@ -13,37 +11,52 @@ require 'classifier/markov_chain'
 require 'cross_validator'
 require 'yaml'
 
-slice, num_slices = ARGV
+class Classify
+    def initialize crossvalidators, input_file
+        @crossvalidators = crossvalidators
+        @input_file = input_file
+    end
 
-articles = []
-Parser.new.articles_from_stdin do |a|
-	a[:classification] = a[:url]
-	articles << a 
+    def pass_over_file method
+        idx = 0
+        Parser.new.articles_from_file(@input_file) do |article|
+            article[:classification] = article[:url]
+            @crossvalidators.each do |crossvalidator|
+                crossvalidator.send method, idx, article
+            end
+            idx += 1
+        end
+    end
+
+    def display_results
+        @crossvalidators.each do |crossvalidator|
+            classifier = crossvalidator.classifier
+            display_name = classifier.respond_to?(:display_name) ? classifier.display_name : classifier.class.to_s
+            puts "result #{display_name} #{crossvalidator.pass_rate}"
+        end
+    end
+    
+    def run
+        pass_over_file :training_pass
+        pass_over_file :testing_pass
+        display_results
+    end
 end
 
-classifiers = []
-#classifiers << MAlgoClassifier.new
-classifiers << WordOccClassifier.new
-classifiers << NaiveBayesClassifier.new
-classifiers << MultinominalBayesClassifier.new
-classifiers << MarkovChainClassifier.new(:include_start_end => true)
+raise "classify.rb <slice> <num_slices> <article file>" if ARGV.length!=3
+slice, num_slices, input = ARGV
+
+classifiers = [
+        WordOccClassifier.new,
+        NaiveBayesClassifier.new,
+        #MultinominalBayesClassifier.new,
+        MarkovChainClassifier.new(:include_start_end => true)
+    ]
 
 crossvalidators = classifiers.collect { |classifier| CrossValidator.new(classifier, slice.to_i, num_slices.to_i) }
 
-articles.each_with_index do |article, idx|
-	crossvalidators.each do |crossvalidator|
-		crossvalidator.training_pass idx, article	
-	end
-end
-articles.each_with_index do |article, idx|
-	crossvalidators.each do |crossvalidator|
-		crossvalidator.testing_pass idx, article	
-	end
-end
+classify = Classify.new  crossvalidators, input
+classify.run
 
-crossvalidators.each do |crossvalidator|
-	classifier = crossvalidator.classifier
-	display_name = classifier.respond_to?(:display_name) ? classifier.display_name : classifier.class.to_s
-	puts "result #{display_name} #{crossvalidator.pass_rate}"
-end
+
 

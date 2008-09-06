@@ -48,7 +48,7 @@ class Array
 		begin
 			eval_fractions.inject(0) { |sum, fr| sum + Math.log(fr) }
 		rescue
-			puts "doh!"
+			#puts "doh!"
 			0
 		end
 	end
