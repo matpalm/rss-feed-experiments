@@ -13,49 +13,6 @@ describe 'naive_bayes_classifier' do
 		@c = NaiveBayesClassifier.new
 	end
 
-	describe 'class probabilities' do
-		it 'for single class with single example' do
-			@c.train([], :a)	
-			@c.class_probability(:a).should be_close(1, 0.01)
-			@c.class_probability(:b).should be_close(0, 0.01)
-		end
-
-		it 'for single class with multiple examples' do
-			@c.train([], :a)	
-			@c.train([], :a)	
-			@c.class_probability(:a).should be_close(1, 0.01)
-			@c.class_probability(:b).should be_close(0, 0.01)
-		end
-
-		it 'for multiple classes with single examples' do
-			@c.train([], :a)	
-			@c.train([], :b)	
-			@c.train([], :c)	
-			@c.class_probability(:a).should be_close(1.to_f/3, 0.01)
-			@c.class_probability(:b).should be_close(1.to_f/3, 0.01)		
-			@c.class_probability(:c).should be_close(1.to_f/3, 0.01)		
-		end
-
-		it 'for multiple classes with single examples' do
-			@c.train([], :a)	
-			@c.train([], :b)	
-			@c.train([], :c)	
-			@c.class_probability(:a).should be_close(1.to_f/3, 0.01)
-			@c.class_probability(:b).should be_close(1.to_f/3, 0.01)		
-			@c.class_probability(:c).should be_close(1.to_f/3, 0.01)		
-		end
-
-		it 'for multiple classes with multiple examples' do
-			@c.train([], :a)	
-			@c.train([], :b)	
-			@c.train([], :b)	
-			@c.train([], :c)	
-			@c.class_probability(:a).should be_close(1.to_f/4, 0.01)
-			@c.class_probability(:b).should be_close(1.to_f/2, 0.01)		
-			@c.class_probability(:c).should be_close(1.to_f/4, 0.01)		
-		end
-	end
-	
 	describe 'conditional probability fractions' do
 		it 'for single class with single example' do
 			@c.train([:on, :linux], :a)	
@@ -117,22 +74,15 @@ describe 'naive_bayes_classifier' do
 			@c.conditional_probabilities([:on,:linux,:hollywood,:suess], :a).should ==[[2,2],[1,2],[1,2],[0,2]]			
 			@c.conditional_probabilities([:on,:linux,:hollywood,:suess], :b).should ==[[3,3],[1,3],[0,3],[2,3]]
 		end		
-
-		it 'checking conditional_probabilities_with_estimator' do
-			@c.conditional_probabilities_with_estimator([:on,:linux,:hollywood], :a).should ==[[3,5],[2,5],[2,5]]					
-			@c.conditional_probabilities_with_estimator([:on, :linux, :suess], :b).should ==[[4,6],[2,6],[3,6]]
-			@c.conditional_probabilities_with_estimator([:on,:linux,:hollywood,:suess], :a).should ==[[3,6],[2,6],[2,6],[1,6]]					
-			@c.conditional_probabilities_with_estimator([:on,:linux,:hollywood,:suess], :b).should ==[[4,7],[2,7],[1,7],[3,7]]
-		end		
 		
 		it 'checking conditional_probabilities_with_estimator_if_required runs estimator when required' do
 			ca1 = @c.conditional_probabilities_with_estimator_if_required([:on,:linux,:hollywood,:suess], :a)
-			ca2 = @c.conditional_probabilities_with_estimator([:on,:linux,:hollywood,:suess], :a)
-			ca1.should == ca2
+			ca2 = @c.conditional_probabilities([:on,:linux,:hollywood,:suess], :a)
+			ca1.should_not == ca2
 			
 			cb1 = @c.conditional_probabilities_with_estimator_if_required([:on,:linux,:hollywood,:suess], :b)
-			cb2 = @c.conditional_probabilities_with_estimator([:on,:linux,:hollywood,:suess], :b)			
-			cb1.should == cb2
+			cb2 = @c.conditional_probabilities([:on,:linux,:hollywood,:suess], :b)
+			cb1.should_not == cb2
 		end
 
 		it 'checking conditional_probabilities_with_estimator_if_required doesnt run estimator when not required' do
