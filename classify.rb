@@ -25,7 +25,7 @@ classifiers = []
 #classifiers << MAlgoClassifier.new
 classifiers << WordOccClassifier.new
 classifiers << NaiveBayesClassifier.new
-#classifiers << MultinominalBayesClassifier.new
+classifiers << MultinominalBayesClassifier.new
 classifiers << MarkovChainClassifier.new(:include_start_end => true)
 
 crossvalidators = classifiers.collect { |classifier| CrossValidator.new(classifier, slice.to_i, num_slices.to_i) }
