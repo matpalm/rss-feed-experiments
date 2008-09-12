@@ -9,6 +9,7 @@ class VectorSpaceModel < Classifier
     def probability_of_words_given_class terms, clas
         class_document_vector = document_vector_for_class clas
         article_document_vector = document_vector_for_terms terms
+        class_document_vector.dot_product article_document_vector 
     end
 
     def document_vector_for_class clas

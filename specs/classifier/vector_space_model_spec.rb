@@ -73,6 +73,25 @@ describe 'vector_space_model' do
 
     end
 
+    describe 'actual probability calcs using inner product' do
+        it 'should calculate multiple probabilies correctly' do
+            vsm = VectorSpaceModel.new
+            vsm.train split_to_sym("shipment of gold damaged in a fire"), :d1
+            vsm.train split_to_sym("delivery of silver arrived in a silver truck"), :d2
+            vsm.train split_to_sym("shipment of gold arrived in a truck"), :d3
+
+            terms = split_to_sym "gold silver truck"
+
+            d1p = vsm.probability_of_words_given_class terms, :d1
+            d2p = vsm.probability_of_words_given_class terms, :d2
+            d3p = vsm.probability_of_words_given_class terms, :d3
+
+            d2p.should be > d3p
+            d3p.should be > d1p
+        end
+
+    end
+
     def assert_like a, b
 #        puts "a #{a.inspect} b #{b.inspect}"
         a.keys.size.should == b.keys.size
