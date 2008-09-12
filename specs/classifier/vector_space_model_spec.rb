@@ -6,10 +6,10 @@ describe 'vector_space_model' do
 
         before :each do
             @vsm = VectorSpaceModel.new
-            @vsm.train split_to_sym("shipment of gold"), :d1
-            @vsm.train split_to_sym("damaged in a fire"), :d1
-            @vsm.train split_to_sym("delivery of silver arrived in a silver truck"), :d2
-            @vsm.train split_to_sym("shipment of gold arrived in a truck"), :d3
+            @vsm.train split_to_syms("shipment of gold"), :d1
+            @vsm.train split_to_syms("damaged in a fire"), :d1
+            @vsm.train split_to_syms("delivery of silver arrived in a silver truck"), :d2
+            @vsm.train split_to_syms("shipment of gold arrived in a truck"), :d3
         end
 
         it 'should keep track of number of classes' do
@@ -24,10 +24,10 @@ describe 'vector_space_model' do
         end
 
         it 'should be able to calculate inverse document frequency for a particular term' do
-            @vsm.idf(:a).should == 0
-            @vsm.idf(:arrived).should be_close(0.405, 0.01) # 0.176 if log10
-            @vsm.idf(:silver).should be_close(1.098, 0.01)  # 0.477 if log10
-            @vsm.idf(:superdupericecream).should == 0  # TODO what should this be??
+            @vsm.inverse_document_frequency(:a).should == 0
+            @vsm.inverse_document_frequency(:arrived).should be_close(0.405, 0.01) # 0.176 if log10
+            @vsm.inverse_document_frequency(:silver).should be_close(1.098, 0.01)  # 0.477 if log10
+            @vsm.inverse_document_frequency(:superdupericecream).should == 0  # TODO what should this be??
         end
 
     end
@@ -46,13 +46,13 @@ describe 'vector_space_model' do
             assert_like vsm.document_vector_for_class(:d1), { }
             assert_like vsm.document_vector_for_class(:d2), { }
 
-            vsm.train split_to_sym("gold"), :d1
-            vsm.train split_to_sym("silver delivery"), :d2
+            vsm.train split_to_syms("gold"), :d1
+            vsm.train split_to_syms("silver delivery"), :d2
             assert_like vsm.document_vector_for_class(:d1), { :gold => 0.693 }
             assert_like vsm.document_vector_for_class(:d2), { :silver => 0.693, :delivery => 0.693 }
 
-            vsm.train split_to_sym("damaged in fire"), :d1
-            vsm.train split_to_sym("in silver fire"), :d2
+            vsm.train split_to_syms("damaged in fire"), :d1
+            vsm.train split_to_syms("in silver fire"), :d2
             assert_like vsm.document_vector_for_class(:d1), { :gold => 0.693, :damaged => 0.693 }
             assert_like vsm.document_vector_for_class(:d2), { :silver => 1.386, :delivery => 0.693 }
         end
@@ -63,10 +63,10 @@ describe 'vector_space_model' do
 
         it 'should build doc vector for terms in the same way it does for a trained class' do
             vsm = VectorSpaceModel.new
-            vsm.train split_to_sym("shipment of gold damaged in a fire"), :d1
-            vsm.train split_to_sym("delivery of silver arrived in a silver truck"), :d2
-            vsm.train split_to_sym("shipment of gold arrived in a truck"), :d3
-            actual = vsm.document_vector_for_terms(split_to_sym("gold silver truck"))
+            vsm.train split_to_syms("shipment of gold damaged in a fire"), :d1
+            vsm.train split_to_syms("delivery of silver arrived in a silver truck"), :d2
+            vsm.train split_to_syms("shipment of gold arrived in a truck"), :d3
+            actual = vsm.document_vector_for_terms(split_to_syms("gold silver truck"))
             expected = { :gold => 0.405, :silver => 1.098, :truck => 0.405}
             assert_like actual, expected
         end
@@ -74,13 +74,14 @@ describe 'vector_space_model' do
     end
 
     describe 'actual probability calcs using inner product' do
+        
         it 'should calculate multiple probabilies correctly' do
             vsm = VectorSpaceModel.new
-            vsm.train split_to_sym("shipment of gold damaged in a fire"), :d1
-            vsm.train split_to_sym("delivery of silver arrived in a silver truck"), :d2
-            vsm.train split_to_sym("shipment of gold arrived in a truck"), :d3
+            vsm.train split_to_syms("shipment of gold damaged in a fire"), :d1
+            vsm.train split_to_syms("delivery of silver arrived in a silver truck"), :d2
+            vsm.train split_to_syms("shipment of gold arrived in a truck"), :d3
 
-            terms = split_to_sym "gold silver truck"
+            terms = split_to_syms "gold silver truck"
 
             d1p = vsm.probability_of_words_given_class terms, :d1
             d2p = vsm.probability_of_words_given_class terms, :d2
@@ -100,7 +101,7 @@ describe 'vector_space_model' do
         end
     end
 
-    def split_to_sym words
+    def split_to_syms words
         words.split.collect {|w| w.to_sym }
     end
     

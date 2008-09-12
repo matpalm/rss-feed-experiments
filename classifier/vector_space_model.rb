@@ -23,7 +23,7 @@ class VectorSpaceModel < Classifier
         terms_vector_class.document_vector self
     end
 
-    def idf term
+    def inverse_document_frequency term
         freq = num_classes_with(term)
         return 0 if freq==0
         Math.log(num_classes.to_f / freq)        

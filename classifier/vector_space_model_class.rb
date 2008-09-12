@@ -35,9 +35,9 @@ class VectorSpaceModelClass
     def document_vector idf_supplier
         vector = {}
         uniq_terms.each do |term|             
-            tf_idf = term_frequency(term) * idf_supplier.idf(term)
+            tf_idf = term_frequency(term) * idf_supplier.inverse_document_frequency(term)
             vector[term] = tf_idf unless tf_idf == 0
-        end
+        end         
         vector
     end
     
