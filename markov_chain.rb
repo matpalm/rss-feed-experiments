@@ -51,7 +51,7 @@ class MarkovChain
     end
     
 	def add_edges from, to, n
-        puts "#{self.object_id} add_edges #{from} -> #{to} (#{n})"
+        #puts "#{self.object_id} add_edges #{from} -> #{to} (#{n})"
 		@num_edges += n
 		@count_nodes_from[from] ||= 0
 		@count_nodes_from[from] += n
