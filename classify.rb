@@ -9,6 +9,7 @@ require 'classifier/word_occ'
 require 'classifier/naive_bayes'
 require 'classifier/multinominal_bayes'
 require 'classifier/markov_chain'
+require 'classifier/vector_space_model'
 
 require 'cross_validator'
 require 'yaml'
@@ -23,10 +24,11 @@ end
 
 classifiers = []
 #classifiers << MAlgoClassifier.new
-classifiers << WordOccClassifier.new
-classifiers << NaiveBayesClassifier.new
+#classifiers << WordOccClassifier.new
+#classifiers << NaiveBayesClassifier.new
 classifiers << MultinominalBayesClassifier.new
-classifiers << MarkovChainClassifier.new(:include_start_end => true)
+#classifiers << MarkovChainClassifier.new(:include_start_end => true)
+classifiers << VectorSpaceModel.new
 
 crossvalidators = classifiers.collect { |classifier| CrossValidator.new(classifier, slice.to_i, num_slices.to_i) }
 

@@ -7,6 +7,7 @@ describe 'markov chain' do
 	end
 	
 	describe 'on creation' do
+
 		it 'should report zero start probabilities' do
 			@mc.start_prob(:a).should ==[0,0]
 			@mc.start_prob(:b).should ==[0,0]
@@ -20,14 +21,20 @@ describe 'markov chain' do
 		it 'should report zero transistion probabilities' do
 			@mc.trans_prob(:a, :b).should ==[0,0]
 			@mc.trans_prob(:b, :a).should ==[0,0]
-		end
+        end
+
+        it 'should report no edges from states' do
+            @mc.edges_from(:a).should be_empty
+            @mc.edges_from(:b).should be_empty
+        end
+
 	end
 	
 	describe 'after given one example' do
 		before :each do 
 			@mc.example([:a, :b])
 		end
-		
+
 		it 'should record start probabilities' do						
 			@mc.start_prob(:a).should ==[1,1]		
 			@mc.start_prob(:b).should ==[0,3] # 3 edges in total for START -> a -> b -> END		
@@ -45,12 +52,18 @@ describe 'markov chain' do
 			@mc.trans_prob(:a, :c).should ==[0,3]
 			@mc.trans_prob(:b, :d).should ==[0,3]
 		end
-		
+
+        it 'should report edges from states' do
+            @mc.edges_from(:START).should == Set.new( [:a] )
+            @mc.edges_from(:a).should == Set.new( [:b] )
+            @mc.edges_from(:b).should == Set.new( [:END] )
+        end
+
 		describe 'and another example' do
 			before :each do 
 				@mc.example([:a, :c])
 			end
-			
+
 			it 'should record start probabilities' do						
 				@mc.start_prob(:a).should ==[2,2]
 				@mc.start_prob(:b).should ==[0,6] # 6 edges in total from examples	
@@ -69,7 +82,14 @@ describe 'markov chain' do
 				@mc.trans_prob(:a, :d).should ==[0,6]
 				@mc.trans_prob(:b, :d).should ==[0,6]
 			end
-			
+
+            it 'should report edges from states' do
+                @mc.edges_from(:START).should == Set.new( [:a] )
+                @mc.edges_from(:a).should == Set.new( [:b, :c] )
+                @mc.edges_from(:b).should == Set.new( [:END] )
+                @mc.edges_from(:c).should == Set.new( [:END] )
+            end
+
 		end
 		
 	end
@@ -109,8 +129,22 @@ describe 'markov chain' do
 			end			
 		end
 		
-		it 'should record transistion probabilities for edges to node that have neither in or outbounds' 
+#		it 'should record transistion probabilities for edges to node that have neither in or outbounds'
 			
 	end	
+
+    describe 'after given two examples with different start states' do
+        before :each do
+            @mc.example([:a, :b])
+            @mc.example([:c, :b])
+        end
+        it 'should report edges from states' do
+            @mc.edges_from(:START).should == Set.new( [:a, :c] )
+            @mc.edges_from(:a).should == Set.new( [:b] )
+            @mc.edges_from(:c).should == Set.new( [:b] )
+            @mc.edges_from(:b).should == Set.new( [:END] )
+        end
+
+    end
 
 end
