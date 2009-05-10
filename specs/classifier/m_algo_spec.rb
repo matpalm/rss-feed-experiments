@@ -22,7 +22,7 @@ describe 'classifier m_algo' do
 	
 	it 'should classify anything with first word first char after m as false' do
 		@c.classify([:naa,:something]).should == false
-		@c.classify([:zaa,:something]).should == false
-	end
+		@c.classify([:zaa,:something]).should == false        
+    end
 	
 end

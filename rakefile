@@ -1,4 +1,4 @@
 desc "runs spec"
 task :spec do
-	sh 'spec specs/* specs/classifier/*'
+	sh 'spec specs/*'
 end
